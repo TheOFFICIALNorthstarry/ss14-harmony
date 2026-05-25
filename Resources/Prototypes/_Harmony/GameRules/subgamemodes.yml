@@ -55,3 +55,6 @@
   - type: AntagObjectives
     objectives:
     - ObsessedPhotoObjective
+    - ObsessedIsolationObjective
+    - ObsessedStealIdObjective
+  - type: ObsessedRule

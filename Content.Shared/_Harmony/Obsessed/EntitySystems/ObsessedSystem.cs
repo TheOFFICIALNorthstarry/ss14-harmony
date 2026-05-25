@@ -43,6 +43,5 @@ public sealed partial class ObsessedSystem : EntitySystem
             ent.Comp.PhotosTaken++;
             ent.Comp.LastPhotoTaken = _timing.CurTime;
         }
-
     }
 }

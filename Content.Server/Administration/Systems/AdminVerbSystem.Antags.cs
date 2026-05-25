@@ -35,6 +35,7 @@ public sealed partial class AdminVerbSystem
     private static readonly EntProtoId DefaultNinjaRule = "NinjaSpawn";
     private static readonly EntProtoId DefaultBloodBrotherRule = "BloodBrothers"; // Harmony
     private static readonly EntProtoId DefaultConspiratorRule = "Conspirators"; // Harmony
+    private static readonly EntProtoId DefaultObsessedRule = "Obsessed"; // Harmony
     private static readonly ProtoId<StartingGearPrototype> PirateGearId = "PirateGear";
 
     // All antag verbs have names so invokeverb works.
@@ -259,6 +260,21 @@ public sealed partial class AdminVerbSystem
             Message = string.Join(": ", conspiratorName, Loc.GetString("admin-verb-make-conspirator")),
         };
         args.Verbs.Add(conspirator);
+
+        var obsessedName = Loc.GetString("admin-verb-text-make-conspirator");
+        Verb obsessed = new()
+        {
+            Text = obsessedName,
+            Category = VerbCategory.Antag,
+            Icon = new SpriteSpecifier.Rsi(new("/Textures/Objects/Weapons/Melee/kitchen_knife.rsi"), "icon"),
+            Act = () =>
+            {
+                _antag.ForceMakeAntag<ObsessedRuleComponent>(targetPlayer, DefaultObsessedRule);
+            },
+            Impact = LogImpact.High,
+            Message = string.Join(": ", conspiratorName, Loc.GetString("admin-verb-make-obsessed")),
+        };
+        args.Verbs.Add(obsessed);
         // Harmony end
     }
 }
