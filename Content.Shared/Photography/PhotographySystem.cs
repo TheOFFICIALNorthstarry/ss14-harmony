@@ -1,3 +1,4 @@
+using Content.Shared._Harmony.Photography;
 using Content.Shared.EntityTable;
 using Content.Shared.Examine;
 using Content.Shared.Flash;
@@ -94,10 +95,12 @@ public sealed class PhotographySystem : EntitySystem
         }
 
         // harmony change start: obsessed
-        var ev = new PhotographTakenEvent(
-            Target = target
-        );
-        RaiseLocalEvent(user, ref ev);
+        if (user == null)
+            return;
+
+        var ev = new PhotographTakenEvent();
+        ev.Target = target;
+        RaiseLocalEvent(user.Value, ev);
         // harmony change end
     }
 }
