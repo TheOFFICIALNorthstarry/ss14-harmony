@@ -272,7 +272,7 @@ public sealed partial class AdminVerbSystem
                 _antag.ForceMakeAntag<ObsessedRuleComponent>(targetPlayer, DefaultObsessedRule);
             },
             Impact = LogImpact.High,
-            Message = string.Join(": ", conspiratorName, Loc.GetString("admin-verb-make-obsessed")),
+            Message = string.Join(": ", obsessedName, Loc.GetString("admin-verb-make-obsessed")),
         };
         args.Verbs.Add(obsessed);
         // Harmony end

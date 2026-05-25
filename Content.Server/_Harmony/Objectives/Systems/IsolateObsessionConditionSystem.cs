@@ -52,6 +52,8 @@ public sealed class IsolateObsessionConditionSystem : EntitySystem
                 continue; // they don't have a job
             if (!_job.TryGetAllDepartments(jobId, out var departmentProtos))
                 continue; // their job doesn't have any departments?
+            if (uid == args.Mind.OwnedEntity)
+                continue; // this IS the obsessed
             if (uid == obsessionMind.OwnedEntity)
                 continue; // this IS the obsession
 

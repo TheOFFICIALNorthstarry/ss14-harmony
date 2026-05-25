@@ -20,7 +20,7 @@
       sprite: Objects/Devices/travel_camera.rsi
       state: icon
   - type: NumberObjective
-    mix: 4
+    min: 4
     max: 6
     title: objective-condition-photos-title
   - type: PhotographCondition
@@ -28,6 +28,7 @@
 - type: entity
   parent: BaseObsessedObjective
   id: ObsessedIsolationObjective
+  name: Kill all of your obsession's co-workers
   description: Their co-workers are only getting in the way between you and them. Take them all out of the picture, and make sure they aren't coming back.
   components:
   - type: Objective
@@ -39,6 +40,7 @@
 - type: entity
   parent: BaseObsessedObjective
   id: ObsessedStealIdObjective
+  name: Steal your obsession's ID
   description: Their ID card is special to them. Make it yours as well.
   components:
   - type: Objective

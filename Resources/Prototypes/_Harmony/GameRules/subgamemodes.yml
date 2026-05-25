@@ -48,6 +48,8 @@
         text: obsessed-role-greeting
         color: "#DEA0CA"
         sound: /Audio/_Harmony/Misc/obsessed_greeting.ogg
+      components:
+      - type: Obsessed
       mindRoles:
       - MindRoleObsessed
       startingGear: ObsessedGear
