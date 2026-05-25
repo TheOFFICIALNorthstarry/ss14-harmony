@@ -29,3 +29,29 @@
       - type: InitialBloodBrother
       mindRoles:
       - MindRoleBloodBrother
+
+- type: entity
+  parent: BaseGameRule
+  id: Obsessed
+  components:
+  - type: GameRule
+    minPlayers: 5
+  - type: AntagSelection
+    selectionTime: IntraPlayerSpawn
+    agentName: obsessed-round-end-agent-name
+    definitions:
+    - prefRoles: [ Obsessed ]
+      min: 1
+      max: 2
+      playerRatio: 20
+      briefing:
+        text: obsessed-role-greeting
+        color: "#DEA0CA"
+        sound: /Audio/_Harmony/Misc/obsessed_greeting.ogg
+      mindRoles:
+      - MindRoleObsessed
+      startingGear: ObsessedGear
+      multiAntagSetting: NotExclusive
+  - type: AntagObjectives
+    objectives:
+    - ObsessedPhotoObjective

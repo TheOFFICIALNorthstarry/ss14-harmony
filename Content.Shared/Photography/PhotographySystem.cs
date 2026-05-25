@@ -92,5 +92,12 @@ public sealed class PhotographySystem : EntitySystem
 
             _hands.PickupOrDrop(user, spawned, dropNear: true);
         }
+
+        // harmony change start: obsessed
+        var ev = new PhotographTakenEvent(
+            Target = target
+        );
+        RaiseLocalEvent(user, ref ev);
+        // harmony change end
     }
 }

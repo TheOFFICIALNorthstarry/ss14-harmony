@@ -1,0 +1,27 @@
+- type: entity
+  abstract: true
+  parent: BaseObjective
+  id: BaseObsessedObjective
+  components:
+  - type: Objective
+    issuer: obsessed-objective-issuer
+    difficulty: 0 # objectives not randomly assigned
+  - type: RoleRequirement
+    roles:
+    - ObsessedRole
+
+- type: entity
+  parent: BaseObsessedObjective
+  id: ObsessedPhotoObjective
+  description: You need to keep something to remember this special shift by. Use the camera you brought to keep a few moments forever frozen in time. These photos must be taken at least five minutes apart.
+  components:
+  - type: Objective
+    icon:
+      sprite: Objects/Devices/travel_camera.rsi
+      state: icon
+  - type: NumberObjective
+    mix: 4
+    max: 6
+    title: objective-condition-photos-title
+  - type: PhotographCondition
+

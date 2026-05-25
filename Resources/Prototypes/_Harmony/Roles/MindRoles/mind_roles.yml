@@ -21,3 +21,15 @@
     exclusiveAntag: true
     roleType: TeamAntagonist
     subtype: role-subtype-conspirator
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleObsessed
+  name: Obsessed Role
+  components:
+  - type: ObsessedRole
+  - type: MindRole
+    antagPrototype: 
+    exclusiveAntag: true
+    roleType: SoloAntagonist
+    subtype: role-subtype-obsessed
