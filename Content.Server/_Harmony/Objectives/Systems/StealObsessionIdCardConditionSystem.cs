@@ -46,7 +46,7 @@ public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
                 foreach (var entity in container.ContainedEntities)
                 {
                     // check if this ID matches
-                    if (TryComp<IdCardComponent>(entity, out var id) && id.FullName == Name(obsession.Value))
+                    if (TryComp<IdCardComponent>(entity, out var id) && id.FullName == obsessedComp.ObsessionName) // yes, if somebody breaks into HoP to change an ID's name to be the same as their obsession and holds onto that ID, that counts as a greentext. that is also just as antagonistic and requires you to either steal someone else's ID or rename your OWN ID and make it obvious anyways so I think it's fine.
                     {
                         args.Progress = 1f;
                         return;

@@ -25,9 +25,9 @@ public sealed partial class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComp
 
         if (args.Mind.Comp.OwnedEntity == null
             || !TryComp<ObsessedComponent>(args.Mind.Comp.OwnedEntity, out var obsessed)
-            || !_obsessed.TryGetObsession((args.Mind.Comp.OwnedEntity.Value, obsessed), out var obsession, out var obsessionMind))
+            || obsessed.ObsessionName == null)
             return;
 
-        args.Append(Loc.GetString("obsessed-obsession", ("obsession", Name(obsession.Value))));
+        args.Append(Loc.GetString("obsessed-obsession", ("obsession", obsessed.ObsessionName)));
     }
 }

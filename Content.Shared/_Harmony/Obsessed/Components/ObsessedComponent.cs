@@ -1,3 +1,4 @@
+using Content.Shared.Mind.Filters;
 using Robust.Shared.GameStates;
 using Robust.Shared.Serialization.TypeSerializers.Implementations;
 
@@ -14,6 +15,18 @@ public sealed partial class ObsessedComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? Obsession;
+
+    /// <summary>
+    /// Stores the name of the obsession entity at the time of assignment as to not cause issues in case the obsession is renamed ("zombified Urist McObsession") or deleted.
+    /// </summary>
+    [DataField]
+    public string? ObsessionName;
+
+    /// <summary>
+    /// A list of filters to apply to choosing an obsession.
+    /// </summary>
+    [DataField]
+    public List<MindFilter> Filters = new();
 
     /// <summary>
     /// The number of photos the Obsessed has taken of their obsession which were valid for their objective.

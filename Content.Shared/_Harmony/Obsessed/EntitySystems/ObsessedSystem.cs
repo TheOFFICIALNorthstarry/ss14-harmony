@@ -32,7 +32,11 @@ public sealed partial class ObsessedSystem : EntitySystem
         var pool = new AliveHumansPool();
         _mind.TryGetMind(ent, out var mindId, out _);
 
-        ent.Comp.Obsession = _target.PickFromPool(pool, new(), mindId);
+        ent.Comp.Obsession = _target.PickFromPool(pool, ent.Comp.Filters, mindId);
+        if (!TryComp<MindComponent>(ent.Comp.Obsession, out var obsMind)
+            || obsMind.OwnedEntity == null)
+            return;
+        ent.Comp.ObsessionName = Name(obsMind.OwnedEntity.Value);
     }
 
     private void OnPhotoTaken(Entity<ObsessedComponent> ent, ref PhotographTakenEvent args)
