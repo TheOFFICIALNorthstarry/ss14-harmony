@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared._Harmony.Obsessed.Components;
 using Content.Shared._Harmony.Photography;
+using Content.Shared.Humanoid;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Filters;
 using Content.Shared.Objectives.Systems;
@@ -43,5 +45,32 @@ public sealed partial class ObsessedSystem : EntitySystem
             ent.Comp.PhotosTaken++;
             ent.Comp.LastPhotoTaken = _timing.CurTime;
         }
+    }
+
+    /// <summary>
+    /// Gets an Obsessed's obsession. Returns false if either output was null.
+    /// </summary>
+    /// <param name="ent">The entity with ObsessedComponent</param>
+    /// <param name="obsessionEntity">Outputs the entity the obsession is currently controlling.</param>
+    /// <param name="obsessionMind">Outputs the obsession's mind.</param>
+    /// <returns></returns>
+
+    public bool TryGetObsession(Entity<ObsessedComponent?> ent, [NotNullWhen(true)] out Entity<HumanoidProfileComponent?>? obsessionEntity, [NotNullWhen(true)] out Entity<MindComponent?>? obsessionMind)
+    {
+        obsessionEntity = null;
+        obsessionMind = null;
+        if (ent.Comp == null)
+            return false;
+
+        if (ent.Comp.Obsession == null)
+            return false;
+
+        if (!TryComp<MindComponent>(ent.Comp.Obsession.Value, out var obsMind))
+            return false;
+
+        obsessionMind = (ent.Comp.Obsession.Value, obsMind);
+        obsessionEntity = obsMind.OwnedEntity;
+
+        return obsessionMind is not null && obsessionEntity is not null;
     }
 }

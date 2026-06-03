@@ -1,5 +1,7 @@
 using Content.Server._Harmony.Objectives.Components;
+using Content.Shared._Harmony.Obsessed.EntitySystems;
 using Content.Shared._Harmony.Obsessed.Components;
+using Content.Shared.Access.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
@@ -9,6 +11,7 @@ namespace Content.Server._Harmony.Objectives.Systems;
 
 public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
 {
+    [Dependency] private readonly ObsessedSystem _obsessed = default!;
     [Dependency] private readonly SharedIdCardSystem _idCard = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
 
@@ -21,19 +24,13 @@ public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
         _containerQuery = GetEntityQuery<ContainerManagerComponent>();
 
         SubscribeLocalEvent<StealObsessionIdCardConditionComponent, ObjectiveGetProgressEvent>(OnGetProgress);
-        SubscribeLocalEvent<StealObsessionIdCardConditionComponent, ObjectiveAssignedEvent>(OnAssigned);
     }
 
     private void OnGetProgress(Entity<StealObsessionIdCardConditionComponent> ent, ref ObjectiveGetProgressEvent args)
     {
-        if (ent.Comp.Target == null) // ID doesn't exist, give them a free greentext so they can progress
-        {
-            args.Progress = 1f;
-            return;
-        }
-
-
-        if (!_containerQuery.TryGetComponent(args.Mind.OwnedEntity, out var currentManager))
+        if (!TryComp<ObsessedComponent>(args.Mind.OwnedEntity, out var obsessedComp)
+            || !_obsessed.TryGetObsession((args.Mind.OwnedEntity.Value, obsessedComp), out var obsession, out _)
+            || !_containerQuery.TryGetComponent(args.Mind.OwnedEntity, out var currentManager))
         {
             args.Progress = 0f;
             return;
@@ -48,8 +45,8 @@ public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
             {
                 foreach (var entity in container.ContainedEntities)
                 {
-                    // check if this is the ID
-                    if (entity == ent.Comp.Target)
+                    // check if this ID matches
+                    if (TryComp<IdCardComponent>(entity, out var id) && id.FullName == Name(obsession.Value))
                     {
                         args.Progress = 1f;
                         return;
@@ -61,19 +58,7 @@ public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
                 }
             }
         } while (containerStack.TryPop(out currentManager));
-    }
 
-    private void OnAssigned(Entity<StealObsessionIdCardConditionComponent> ent, ref ObjectiveAssignedEvent args)
-    {
-        if (!TryComp<ObsessedComponent>(args.Mind.OwnedEntity, out var obsessed))
-            return;
-
-        if (obsessed.Obsession == null
-            || !_mind.TryGetMind(obsessed.Obsession.Value, out _, out var mind)
-            || mind.OwnedEntity == null
-            || !_idCard.TryFindIdCard(mind.OwnedEntity.Value, out var idCard))
-            return;
-
-        ent.Comp.Target = idCard;
+        args.Progress = 0f;
     }
 }

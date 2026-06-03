@@ -59,4 +59,5 @@
     - ObsessedPhotoObjective
     - ObsessedIsolationObjective
     - ObsessedStealIdObjective
+    - ObsessedAwaitConclusionObjective
   - type: ObsessedRule

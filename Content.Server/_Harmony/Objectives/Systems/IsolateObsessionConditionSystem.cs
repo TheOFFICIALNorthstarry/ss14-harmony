@@ -1,5 +1,6 @@
 using Content.Server._Harmony.Objectives.Components;
 using Content.Shared._Harmony.Obsessed.Components;
+using Content.Shared._Harmony.Obsessed.EntitySystems;
 using Content.Shared.Humanoid;
 using Content.Shared.Mind;
 using Content.Shared.Objectives.Components;
@@ -11,6 +12,7 @@ namespace Content.Server._Harmony.Objectives.Systems;
 
 public sealed class IsolateObsessionConditionSystem : EntitySystem
 {
+    [Dependency] private readonly ObsessedSystem _obsessed = default!;
     [Dependency] private readonly SharedJobSystem _job = default!;
     [Dependency] private readonly SharedMindSystem _mind = default!;
 
@@ -26,20 +28,19 @@ public sealed class IsolateObsessionConditionSystem : EntitySystem
         args.Progress = GetProgress(ent, ref args);
     }
 
-    private List<EntityUid> GetTargets(Entity<IsolateObsessionConditionComponent> ent, ref ObjectiveGetProgressEvent args)
+    private List<EntityUid> GetTargets(ref ObjectiveGetProgressEvent args)
     {
         var targets = new List<EntityUid>();
         var players = AllEntityQuery<HumanoidProfileComponent, ActorComponent>();
 
         if (!TryComp<ObsessedComponent>(args.Mind.OwnedEntity, out var obsessed)
-            || obsessed.Obsession == null
-            || !_mind.TryGetMind(obsessed.Obsession.Value, out var obsessionMindId, out var obsessionMind))
+            || !_obsessed.TryGetObsession((args.Mind.OwnedEntity.Value, obsessed), out var obsession, out var obsessionMind))
             return targets;
 
-        if (!_job.MindTryGetJobId(obsessionMindId, out var obsessionJobId))
+        if (!_job.MindTryGetJobId(obsessionMind, out var obsessionJobId))
             return targets;
 
-        if (!_job.TryGetAllDepartments(obsessionJobId!, out var departments))
+        if (!_job.TryGetAllDepartments(obsessionJobId!, out var departments)) // MindTryGetJobId does not have NotNullWhen on the job ID, so we have to silence the nullable warnings.
             return targets;
 
         var target = false;
@@ -54,7 +55,7 @@ public sealed class IsolateObsessionConditionSystem : EntitySystem
                 continue; // their job doesn't have any departments?
             if (uid == args.Mind.OwnedEntity)
                 continue; // this IS the obsessed
-            if (uid == obsessionMind.OwnedEntity)
+            if (uid == obsession)
                 continue; // this IS the obsession
 
             foreach (DepartmentPrototype obsessionDepartmentProto in departments)
@@ -80,7 +81,7 @@ public sealed class IsolateObsessionConditionSystem : EntitySystem
 
     private float GetProgress(Entity<IsolateObsessionConditionComponent> ent, ref ObjectiveGetProgressEvent args)
     {
-        var targets = GetTargets(ent, ref args);
+        var targets = GetTargets(ref args);
         var killed = 0;
 
         foreach (var target in targets)

@@ -13,7 +13,7 @@
 - type: entity
   parent: BaseObsessedObjective
   id: ObsessedPhotoObjective
-  description: You need to keep something to remember this special shift by. Use the camera you brought to keep a few moments forever frozen in time. These photos must be taken at least five minutes apart.
+  description: Use the camera you brought to keep a few moments forever frozen in time. These photos must be taken at least five minutes apart.
   components:
   - type: Objective
     icon:
@@ -48,3 +48,17 @@
       sprite: Objects/Misc/id_cards.rsi
       state: default
   - type: StealObsessionIdCardCondition
+
+- type: entity
+  parent: BaseObsessedObjective
+  id: ObsessedAwaitConclusionObjective
+  description: You haven't quite decided what you will do to them yet. Keep your options open until you've completed the rest of your objectives.
+  components:
+  - type: Objective
+    icon:
+      sprite: Objectives/Specific/Medical/firstaidkits.rsi
+      state: advkit
+  - type: TargetObjective
+    title: obsessed-pending-objective-title
+  - type: PickObsession
+  - type: KeepAliveCondition

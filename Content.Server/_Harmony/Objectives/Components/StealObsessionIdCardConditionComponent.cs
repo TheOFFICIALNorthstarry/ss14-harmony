@@ -6,11 +6,4 @@ namespace Content.Server._Harmony.Objectives.Components;
 /// Requires the holder to be an Obsessed and requires them to steal their obsession's ID card.
 /// </summary>
 [RegisterComponent, Access(typeof(StealObsessionIdCardConditionSystem))]
-public sealed partial class StealObsessionIdCardConditionComponent : Component
-{
-    /// <summary>
-    /// The EntityUid of the obsession's ID card.
-    /// </summary>
-    [DataField]
-    public EntityUid? Target;
-}
+public sealed partial class StealObsessionIdCardConditionComponent : Component;
