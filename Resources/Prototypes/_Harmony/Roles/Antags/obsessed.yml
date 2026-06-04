@@ -14,3 +14,20 @@
   storage:
     back:
     - TravelCamera
+
+- type: antagSpecifier
+  parent: RestrictedAntag
+  id: Obsessed
+  prefRoles:
+  - Obsessed
+  multiAntagSetting: NotExclusive
+  blacklist:
+    components:
+    - AntagImmune
+  startingGear: ObsessedGear
+  mindRoles:
+  - MindRoleObsessed
+  briefing:
+    text: obsessed-role-greeting
+    color: "#DEA0CA"
+    sound: /Audio/_Harmony/Misc/obsessed_greeting.ogg
