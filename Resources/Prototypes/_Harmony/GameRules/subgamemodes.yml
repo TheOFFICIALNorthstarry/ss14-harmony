@@ -29,12 +29,13 @@
   - type: AntagSelection
     selectionTime: PrePlayerSpawn
     agentName: obsessed-round-end-agent-name
+    lateJoinAdditional: true
     antags:
     - type: !LinearAntagCount
       proto: Obsessed
       range:
         min: 1
-        max: 2
+        max: 3
   - type: AntagObjectives
     objectives:
     - ObsessedPhotoObjective
