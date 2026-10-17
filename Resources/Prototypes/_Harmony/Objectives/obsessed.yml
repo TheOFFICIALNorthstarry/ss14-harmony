@@ -51,6 +51,21 @@
 
 - type: entity
   parent: BaseObsessedObjective
+  id: ObsessedNearbyObjective
+  description: Make sure you can always watch and listen in on your obsession.
+  components:
+  - type: Objective
+    icon:
+      sprite: Clothing/Eyes/Glasses/sunglasses.rsi
+      state: icon
+  - type: NumberObjective
+    min: 250
+    max: 350
+    title: objective-condition-nearby-title
+  - type: BeNearObsessionCondition
+
+- type: entity
+  parent: BaseObsessedObjective
   id: ObsessedAwaitConclusionObjective
   description: You haven't quite decided what you will do to them yet. Keep your options open until you've completed the rest of your objectives.
   components:

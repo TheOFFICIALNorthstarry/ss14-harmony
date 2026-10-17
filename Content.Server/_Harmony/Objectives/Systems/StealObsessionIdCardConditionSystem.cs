@@ -11,9 +11,9 @@ namespace Content.Server._Harmony.Objectives.Systems;
 
 public sealed partial class StealObsessionIdCardConditionSystem : EntitySystem
 {
-    [Dependency] private readonly ObsessedSystem _obsessed = default!;
-    [Dependency] private readonly SharedIdCardSystem _idCard = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private ObsessedSystem _obsessed = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
     private EntityQuery<ContainerManagerComponent> _containerQuery;
 

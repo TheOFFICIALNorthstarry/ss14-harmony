@@ -10,8 +10,6 @@ namespace Content.Server._Harmony.GameTicking.Rules;
 
 public sealed partial class ObsessedRuleSystem : GameRuleSystem<ObsessedRuleComponent>
 {
-    [Dependency] private readonly ObsessedSystem _obsessed = default!;
-
     public override void Initialize()
     {
         base.Initialize();

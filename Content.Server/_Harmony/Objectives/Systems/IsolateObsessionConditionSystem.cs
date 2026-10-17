@@ -12,9 +12,9 @@ namespace Content.Server._Harmony.Objectives.Systems;
 
 public sealed class IsolateObsessionConditionSystem : EntitySystem
 {
-    [Dependency] private readonly ObsessedSystem _obsessed = default!;
-    [Dependency] private readonly SharedJobSystem _job = default!;
-    [Dependency] private readonly SharedMindSystem _mind = default!;
+    [Dependency] private ObsessedSystem _obsessed = default!;
+    [Dependency] private SharedJobSystem _job = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
 
     public override void Initialize()
     {

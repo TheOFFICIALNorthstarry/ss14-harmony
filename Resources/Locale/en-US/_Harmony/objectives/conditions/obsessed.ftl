@@ -1,4 +1,5 @@
 objective-condition-photos-title = Take {$count} photos of your obsession
+objective-condition-nearby-title = Stay near your obsession for {$count} seconds
 
 obsessed-pending-objective-title = Keep {$target}, {$job} alive for now
 obsessed-kill-obsession-title = Kill {$target}, {$job}

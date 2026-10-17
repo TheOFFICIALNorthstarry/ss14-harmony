@@ -12,7 +12,6 @@ public sealed partial class PickObsessionSystem : EntitySystem
 {
     [Dependency] private ObsessedSystem _obsessed = default!;
     [Dependency] private TargetObjectiveSystem _objective = default!;
-    [Dependency] private TargetSystem _target = default!;
 
     public override void Initialize()
     {

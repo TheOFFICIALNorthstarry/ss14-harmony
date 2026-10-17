@@ -44,5 +44,23 @@ public sealed partial class ObsessedComponent : Component
     /// The distance the Obsessed needs to be within of their obsession in order to tick up their objective.
     /// </summary>
     [DataField]
-    public float CloseToObsessionDistance = 16f; // same as a pinpointer turning blue
+    public float Distance = 16f; // same as a pinpointer turning blue
+
+    /// <summary>
+    /// The interval between the update loop which checks the distance between the Obsessed and obsession.
+    /// </summary>
+    [DataField]
+    public TimeSpan DistanceCheckInterval = TimeSpan.FromSeconds(1);
+
+    /// <summary>
+    /// When the distance between the Obsessed and obsession will next be  checked.
+    /// </summary>
+    [DataField]
+    public TimeSpan NextUpdate = TimeSpan.Zero;
+
+    /// <summary>
+    /// The amount of time the Obsessed has currently spent with their obsession.
+    /// </summary>
+    [DataField]
+    public TimeSpan TimeSpent = TimeSpan.Zero;
 }

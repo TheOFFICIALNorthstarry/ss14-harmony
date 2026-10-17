@@ -11,9 +11,10 @@ namespace Content.Shared._Harmony.Obsessed.EntitySystems;
 
 public sealed partial class ObsessedSystem : EntitySystem
 {
-    [Dependency] private readonly SharedMindSystem _mind = default!;
-    [Dependency] private readonly TargetSystem _target = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private SharedMindSystem _mind = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private TargetSystem _target = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -37,6 +38,8 @@ public sealed partial class ObsessedSystem : EntitySystem
             || obsMind.OwnedEntity == null)
             return;
         ent.Comp.ObsessionName = Name(obsMind.OwnedEntity.Value);
+
+        Dirty(ent);
     }
 
     private void OnPhotoTaken(Entity<ObsessedComponent> ent, ref PhotographTakenEvent args)
@@ -48,6 +51,8 @@ public sealed partial class ObsessedSystem : EntitySystem
         {
             ent.Comp.PhotosTaken++;
             ent.Comp.LastPhotoTaken = _timing.CurTime;
+
+            Dirty(ent);
         }
     }
 
@@ -76,5 +81,29 @@ public sealed partial class ObsessedSystem : EntitySystem
         obsessionEntity = obsMind.OwnedEntity;
 
         return obsessionMind is not null && obsessionEntity is not null;
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var query = EntityQueryEnumerator<ObsessedComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (_timing.CurTime < comp.NextUpdate)
+                continue;
+            if (!TryGetObsession((uid, comp), out var obsession, out _))
+                continue;
+
+            comp.NextUpdate += comp.DistanceCheckInterval;
+
+            var dir = _transform.GetWorldPosition(obsession.Value) - _transform.GetWorldPosition(uid);
+
+            if (dir.Length() <= comp.Distance)
+            {
+                comp.TimeSpent += comp.DistanceCheckInterval;
+                Dirty(uid, comp);
+            }
+        }
     }
 }
